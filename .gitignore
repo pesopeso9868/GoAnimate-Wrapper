@@ -1,7 +1,9 @@
-node_modules/*/node_modules
-node_modules/*
+#had to remove node_modules from the list or else git would have gone absolutely nuts
+
+#node_modules/*/node_modules
+#node_modules/*
 _CACHÉ/*
 _SAVED/*
-!node_modules/node-zip
+#!node_modules/node-zip
 !_*/_NO_REMÖVE
 .DS_Store
