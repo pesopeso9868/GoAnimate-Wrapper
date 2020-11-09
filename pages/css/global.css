@@ -5,138 +5,166 @@ this css has the general header/footer layout stuff
 /**
 general
 **/
-html,body{
+html, body {
 	background: #fff;
 	color: #474747;
 	font: 16px/1.5 'Sailec', Arial, sans-serif;
-	width:100%;height:100%;
-}
-body {
-	display: flex; 
-  flex-direction: column; 
+	width: 100%;
+	height: 100%;
 }
 
+body {
+	display: flex;
+	flex-direction: column;
+}
 
 /**
 header
 **/
 header {
+
 	/* style */
 	background: #1e1e1e;
 	color: #fff;
-	text-align: center;
-	/* layout */
-	height: 44px;
-	padding: 0 15px;
+	text-align: center;	/* layout */
+	height: 44px;	/*padding: 0 15px;*/
 	display: flex;
 	justify-content: space-between;
 }
+
 #logo {
-	margin-top: 4px;
-	height: 35px;
+	display: block;
+	height: 24px;
+	margin: auto 10px;
 }
+
 /* buttons */
-.button_big,
-.button_small {
+.button_big, .button_small {
+
 	/* style */
 	font-size: 14px;
 	text-decoration: none;
 	color: #fff;
-	border-radius: 6px;
-	/* layout */
+	border-radius: 6px;	/* layout */
 	display: inline-block;
 	padding: 5px 10px;
 	margin: 6px 5px;
 }
-.button_big:hover,
-.button_small:hover {
+
+.button_big:hover, .button_small:hover {
 	cursor: pointer;
 }
+
 /* small buttons */
-.button_small       { background: #333 }
-.button_small:hover { background: #444; color: #d85e27 }
+.button_small {
+	background: #333;
+	transition: .1s;
+}
+
+.button_small:hover {
+	background: #444;
+	color: #d85e27;
+}
+
 /* big buttons */
 .button_big {
 	background-color: #d85e27;
 	width: 160px;
 }
-.button_big:hover {
-	text-decoration: underline;
-}
 
+/*.button_big:hover {
+text-decoration: underline;
+}*/
 
 /**
 header dropdowns
 **/
+
 /* change button margin/padding to fit dropdown */
-.dropdown_contain { padding: 0; margin: 6px 5px; }
-.dropdown_button { margin: 0; padding: 5px 10px; }
+.dropdown_contain {
+	padding: 0;
+	margin: 6px 5px;
+}
+
+.dropdown_button {
+	margin: 0;
+	padding: 5px 10px;
+}
+
 /* make dropdown appear on hover */
 .dropdown_contain:hover>nav {
 	display: block;
 	cursor: default;
 }
+
 /* the dropdown itself */
 .dropdown_menu {
+
 	/* style */
 	background-color: #444;
-	border-radius: 6px;
-	/* layout */
+	border-radius: 6px;	/* layout */
 	width: 100%;
 	padding: 10px 0;
 	margin: 0;
-	text-align: left;
-	/* hover stuff */
+	text-align: left;	/* hover stuff */
 	position: relative;
 	float: left;
 	display: none;
 }
+
 /* dropdown links */
 .dropdown_menu>a {
+
 	/* style */
 	color: #ddd;
-	text-decoration: none;
-	/* layout */
+	text-decoration: none;	/* layout */
 	display: block;
 	padding: 2px 20px;
 }
+
 .dropdown_menu>a:hover {
 	background: #222;
 	color: #d85e27;
 	cursor: pointer;
 }
+
 /* dropdown header and separation */
 .dropdown_menu>h2 {
+
 	/* style */
 	color: #fff;
-	font-size: 15px;
-	/* layout */
-	margin:0;
-	padding:2px 20px;
+	font-size: 15px;	/* layout */
+	margin: 0;
+	padding: 2px 20px;
 }
+
 .dropdown_menu>hr {
 	border: 1px solid #222;
 	margin: 10px 0;
 }
 
-
 /**
 footer
 **/
-footer{
+footer {
 	background: #1e1e1e;
 	margin-top: auto; /* footer at the foot */
 	display: flex;
 	justify-content: space-between
 }
-footer nav { margin:5px 10px}
+
+footer nav {
+	margin: 5px 10px
+}
+
 /* links */
 footer a {
 	color: #fff;
-	text-decoration:none;
+	text-decoration: none;
 	margin: 0 10px;
 	font-weight: bold;
 }
+
 footer a:hover {
 	text-decoration: underline;
 }
@@ -180,4 +208,34 @@ font importing
 	src: url('../fonts/glyphicons-regular.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
+}
+
+header>h1 {
+	display: block;
+	height: 100%;
+}
+.center{
+	text-align: center;
+}
+
+.container{
+	margin: auto;
+}
+
+@media(min-width: 768px) {
+	main .container {
+		width: 750px;
+	}
+}
+
+@media(min-width: 992px) {
+	main .container {
+		width: 970px;
+	}
+}
+
+@media(min-width: 1200px) {
+	main .container {
+		width: 1170px;
+	}
 }

@@ -1,1 +1,3 @@
+//LORD FORGIVE ME FOR WHAT IM ABOUT TO DO
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
 require('./server');

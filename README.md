@@ -1,33 +1,20 @@
 # Wrapper
-This is a Goanimate Legacy Video Maker Remake built in [Node.js](https://nodejs.org/)
+Wrapper is a recreation of the API endpoints on GoAnimate (a.k.a. Vyond) in JavaScript. 
 
-# Server
-If you want to edit the Asset Server, then click [here](https://github.com/2Epik4u/Wrapper-Online-Assets).
+# Prerequisites
+- [`node.js`](https://nodejs.org/)
+- `npm`
+- - `npm is included with node.js`
+- `a brain`
+
+# Asset server
+By default, the asset server is hosted on the [Wrapper: Online](https://wrapper.online/) website.
+If you would like to host the asset server yourself, then click [here](https://github.com/2Epik4u/Wrapper-Online-Assets), follow `README.md` and change `config.json` to reflect the change.
 
 # Start
-To access this service, install [Node.JS](https://nodejs.org/en/) then clone/download this project.	Once done, unzip the folder, copy the path, and execute the following commands in your command prompt (where `{PATH}` is the folder path you copied):
+Ensure you have everything listed in the prerequisites, then clone or download this repository. Once finished, unzip the folder (if needed) and execute the following commands in your command prompt:
 ```console
-cd "{PATH}\Wrapper-Online"
+cd "/path/to/Wrapper-Online"
 npm install
 npm start
 ```
-
-# Host On Evennode
-1. make a account
-2. make a node.js evennode
-3. open command prompt on your main pc (NOT EVENNODE) and run this command ``ssh-keygen -t rsa -C "your_email@example.com"``
-4. go on the folder you saved it in and open the .PUB file
-5. Copy everything inside the file
-6. go on evennode, click account settings and paste the file on the public keys for git box and click save.
-7. go back to your evennode app and go on the info tab
-8. copy the Repository in Git deployment tab.
-9. open cmd again and do cd desktop then git clone PASTEREPOHERE
-10. get your lvm clone and copy all the files and paste it in the repo folder on your desktop with random letters.
-11. go on cmd AGAIN and cd to the folder directory
-12. download github desktop at https://desktop.github.com/
-13. commit the changes and publish branch
-
-# Host on VPS/ Own pc
-if you want to host it on your own pc then simply clone or download this repo.
-Then open cmd then cd to the folder 
-then do npm install the npm start

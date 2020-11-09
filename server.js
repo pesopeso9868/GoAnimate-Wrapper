@@ -24,6 +24,8 @@ const tsl = require('./tts/load');
 const evt = require('./events');
 const url = require('url');
 
+const the = require('./thelooks/page.js');
+
 const functions = [
 	mvL,
 	pmc,
@@ -44,6 +46,7 @@ const functions = [
 	asu,
 	stp,
 	stl,
+	the
 ];
 
 module.exports = http.createServer((req, res) => {
