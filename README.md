@@ -1,3 +1,6 @@
+# NO LONGER BEING UPDATED
+im not updating this anymore.
+
 # Wrapper
 Wrapper is a recreation of the API endpoints on GoAnimate (a.k.a. Vyond) in JavaScript. 
 
