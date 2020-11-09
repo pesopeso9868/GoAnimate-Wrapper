@@ -4,7 +4,7 @@ Wrapper is a recreation of the API endpoints on GoAnimate (a.k.a. Vyond) in Java
 # Prerequisites
 - [`node.js`](https://nodejs.org/)
 - `npm`
-- - `npm is included with node.js`
+  - `npm is included with node.js`
 - `a brain`
 
 # Asset server
