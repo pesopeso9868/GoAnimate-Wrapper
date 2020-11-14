@@ -75,7 +75,9 @@ tr>:nth-child(3)>* {
 	display: inline-block;
 	text-align: center;
 	font-size: 12px;
-	width: 8.5px;
+	/*width: 8.5px;*/
+	letter-spacing: .1rem;
+	font-variant-numeric: tabular-nums;
 }
 
 tr>:nth-child(4) {

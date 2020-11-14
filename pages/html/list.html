@@ -18,8 +18,7 @@
 </head>
 <body>
 	<header>
-		<img id="logo" src="../img/list_logo.png" alt="Wrapper: Online">
-		<nav id="headbuttons">
+		<img id="logo" src="../img/list_logo.png" alt="Wrapper: Online"><nav id="headbuttons">
 			<div class="dropdown_contain button_small">
 				<div class="dropdown_button">Make A Character</div>
 				<nav class="dropdown_menu">
@@ -34,8 +33,7 @@
 					<a href="/cc_browser?themeId=cctoonadventure">Toon Adventure</a>
 					<a href="/cc_browser?themeId=spacecitizen">Space Citizen</a>
 				</nav>
-			</div>
-			<div class="dropdown_contain button_small">
+			</div><div class="dropdown_contain button_small">
 				<div class="dropdown_button">CREATE A CHARACTER</div>
 				<nav class="dropdown_menu">
 					<h2>Comedy World</h2>
@@ -55,8 +53,7 @@
 					<a href="/cc?themeId=chibi&bs=default">Chibi Peepz</a>
 					<a href="/cc?themeId=ninja&bs=default">Chibi Ninjas</a>
 				</nav>
-			</div>
-			<a href="/go_full?tray=custom" class="button_big">MAKE A VIDEO</a>
+			</div><a href="/go_full?tray=custom" class="button_big">MAKE A VIDEO</a>
 		</nav>
 	</header>
 	<main>
@@ -114,8 +111,9 @@
 
 			const tbl = json[c];
 			const date = tbl.date.substr(0, 10) + ' ' + tbl.date.substr(11);
+			// There's an easier way to do this.
 			tbody.insertAdjacentHTML('beforeend',
-				'<tr><td><img src="/movie_thumbs/' + tbl.id + '"></td><td><div>' + tbl.title + '</div><div>' + tbl.durationString + '</div></div></td><td><span>' + date.match(/./g).join('</span><span>') + '</span></td><td><a href="javascript:;" onclick="popup(\'' + tbl.id + '\')"></a><a href="/go_full?movieId=' + tbl.id + '"></a><a href="/movies/' + tbl.id + '.xml" download="' + tbl.title + '"></a></td></tr>');
+				'<tr><td><img src="/movie_thumbs/' + tbl.id + '"></td><td><div>' + tbl.title + '</div><div>' + tbl.durationString + '</div></div></td><td><span class="datestamp">' + date + '</span></td><td><a href="javascript:;" onclick="popup(\'' + tbl.id + '\')"></a><a href="/go_full?movieId=' + tbl.id + '"></a><a href="/movies/' + tbl.id + '.xml" download="' + tbl.title + '"></a></td></tr>');
 		}
 	}
 

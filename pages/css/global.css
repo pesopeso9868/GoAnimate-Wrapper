@@ -22,18 +22,35 @@ header
 **/
 header {
 	/* style */
-	background: linear-gradient(90deg, rgba(0,181,255,1) 0%, rgba(255,0,155,1) 100%);
+	background: #1e1e1e;
 	color: #fff;
 	text-align: center;
 	/* layout */
-	height: 44px;
-	padding: 0 15px;
+	height: 45px;
+	padding: 5px 15px;
 	display: flex;
 	justify-content: space-between;
 }
+main{
+	width: 100%;
+	display: flex;
+	justify-content: center;
+}
+.container{
+	max-width: 1024px;
+}
+.center{
+	text-align: center;
+}
 #logo {
-	margin-top: 4px;
 	height: 35px;
+
+}
+#headbuttons:before{
+	content:"";
+	vertical-align: middle;
+	height:100%;
+	display: inline-block;
 }
 /* buttons */
 .button_big,
@@ -46,7 +63,8 @@ header {
 	/* layout */
 	display: inline-block;
 	padding: 5px 10px;
-	margin: 6px 5px;
+	/*margin: 6px 5px;*/
+	margin: auto 5px;
 }
 .button_big:hover,
 .button_small:hover {
@@ -56,7 +74,7 @@ header {
 .button_small       { background: #3330 }
 .button_small:hover { background: #fff4; color: #fff }
 /* big buttons */
-.button_big { background: #fff; width: 160px; color: #ff009b }
+.button_big { background: #d85e27; width: 160px; }
 }
 .button_big:hover {
 	text-decoration: underline;
@@ -67,8 +85,8 @@ header {
 header dropdowns
 **/
 /* change button margin/padding to fit dropdown */
-.dropdown_contain { padding: 0; margin: 6px 5px; }
-.dropdown_button { margin: 0; padding: 5px 10px; }
+.dropdown_contain { padding: 0; margin: auto; }
+.dropdown_button { margin: auto; padding: 5px 10px; }
 /* make dropdown appear on hover */
 .dropdown_contain:hover>nav {
 	display: block;
@@ -178,5 +196,4 @@ font importing
 	src: url('../fonts/glyphicons-regular.woff') format('woff');
 	font-weight: normal;
 	font-style: normal;
->>>>>>> origin/master
 }

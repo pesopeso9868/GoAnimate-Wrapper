@@ -54,8 +54,13 @@ module.exports = {
 		for (let c = 0; c < ids.length; c++) {
 			const v = ids[c];
 			const id = `c-${v}`;
+			const match = fs.readFileSync(`./_SAVED/char-${v.toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
+			var name = undefined;
+			if(match && match[1]){
+				name = match[1]
+			}
 			if (theme == await chars.getTheme(id))
-				table.unshift({ theme: theme, id: id, });
+				table.unshift({ theme: theme, id: id, name: name});
 		}
 		return table;
 	},

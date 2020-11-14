@@ -10,7 +10,7 @@ async function listAssets(data, makeZip) {
 	switch (data.type) {
 		case 'char': {
 			const chars = await asset.chars(data.themeId);
-			xmlString = `${header}<ugc more="0">${chars.map(v => `<char id="${v.id}" name="Untitled" cc_theme_id="${
+			xmlString = `${header}<ugc more="0">${chars.map(v => `<char id="${v.id}" name="${v.name?v.name:"Untitled"}" cc_theme_id="${
 				v.theme}" thumbnail_url="char_default.png" copyable="Y"><tags/></char>`).join('')}</ugc>`;
 			break;
 		}
