@@ -54,6 +54,10 @@ module.exports = function(req, res, url){
 			});
 			break;
 		}
+		case "/list":{
+			res.writeHead(302, {"Location":"/pages/html/list.html"});
+			break;
+		}
 	}
 	return true;
 }
