@@ -1,127 +1,166 @@
 const cachéFolder = process.env.CACHÉ_FOLDER;
-const fs = require('fs');
+const fs = require("fs");
 
 /**
- * @typedef {{[aId:string]:true,time:DataTransferItem}} vcType
- * @typedef {{[mId:string]:vcType}} cachéType
- * @type cachéType
+ * @summary Dictionary of hashmaps of saved assets, respective to each movie ID loaded.
+ * @typedef {string[]} cTableType
+ * @typedef {{[mId:string]:cTableType}} lcType
+ * @type lcType
  */
-var caché = {}, size = 0;
+const localCaché = {};
+var size = 0;
 
-fs.readdirSync(cachéFolder).forEach(v => {
-	const index = v.indexOf('.');
-	const mId = v.substr(0, index);
-	const aId = v.substr(index + 1);
+// IMPORTANT: serialises the cachéd files into the dictionaries.
+fs.readdirSync(cachéFolder).forEach((v) => {
+	const index = v.indexOf(".");
+	const prefix = v.substr(0, index);
+	const suffix = v.substr(index + 1);
 
-	const stored = caché[mId]
-		|| (caché[mId] = {});
-	switch (aId) {
-		case 'time':
-			stored.time = new Date();
-			break;
-		default:
-			let path = `${cachéFolder}/${v}`;
-			stored[aId] = fs.readFileSync(path);
-	}
-})
+	if (!localCaché[prefix]) localCaché[prefix] = [];
+	localCaché[prefix].push(suffix);
+});
 
 module.exports = {
-	generateId(pre = '', suf = '', ct = {}) {
+	/**
+	 * @summary Generates a random ID with a given prefix and suffix that is unique to the given table.
+	 * @param {string} pre
+	 * @param {string} suf
+	 * @param {cTableType} table
+	 */
+	generateId(pre = "", suf = "", table = []) {
 		var id;
-		do id = `${pre}${('' + Math.random()).replace('.', '')}${suf}`;
-		while (ct[id]);
+		do id = `${pre}${("" + Math.random()).replace(".", "")}${suf}`;
+		while (table.includes(id));
 		return id;
 	},
 	validAssetId(aId) {
 		switch (aId) {
-			case 'id':
-			case 'time':
+			case "id":
+			case "time":
 				return false;
 			default:
 				return true;
 		}
 	},
+	/**
+	 *
+	 * @summary Saves a buffer in movie caché with a given ID.
+	 * @param {string} mId
+	 * @param {string} aId
+	 * @param {Buffer} buffer
+	 */
 	save(mId, aId, buffer) {
 		if (!this.validAssetId(aId)) return;
-		/** @type {vcType} */
-		const stored = (caché[mId] = caché[mId] || {});
+		localCaché[mId] = localCaché[mId] || [];
+		var stored = localCaché[mId];
 		const path = `${cachéFolder}/${mId}.${aId}`;
-		const oldSize = stored[aId] ? fs.readFileSync(path).length : 0;
-		size += buffer.size - oldSize;
-		stored[aId] = true;
-		fs.writeFileSync(`${cachéFolder}/${mId}.${aId}`, buffer);
+
+		if (!stored.includes(aId)) stored.push(aId);
+		if (fs.existsSync(path)) size -= fs.statSync(path).size;
+		fs.writeFileSync(path, buffer);
+		size += buffer.size;
 		return buffer;
 	},
+	/**
+	 *
+	 * @summary Saves a given dictionary of buffers to caché.
+	 * @param {string} mId
+	 * @param {{[aId:string]:Buffer}} buffers
+	 * @returns {{[aId:string]:Buffer}}
+	 */
 	saveTable(mId, buffers = {}) {
-		const keys = Object.keys(buffers);
-		if (!keys.length) caché[mId] = {};
-		keys.forEach(aId =>
-			this.save(mId, aId, buffers[aId]));
-		caché[mId].time = new Date();
+		for (const aId in buffers) {
+			this.save(mId, aId, buffers[aId]);
+		}
 		return buffers;
 	},
 	/**
 	 *
+	 * @summary Retrieves an array of buffers from a given video's caché.
 	 * @param {string} mId
 	 * @returns {{[aId:string]:Buffer}}
 	 */
-	getTable(mId) {
-		if (!caché[mId]) return {};
-
-		const stored = {};
-		for (let aId in caché[mId])
-			stored[aId] = this.load(mId, aId);
-		return stored;
+	loadTable(mId) {
+		const buffers = {};
+		this.list(mId).forEach((aId) => {
+			buffers[aId] = fs.readFileSync(`${cachéFolder}/${mId}.${aId}`);
+		});
+		return buffers;
 	},
 	/**
 	 *
+	 * @summary Retrieves the array of asset IDs for the given video.
+	 * @param {string} mId
+	 * @returns {cTableType}
+	 */
+	list(mId) {
+		return localCaché[mId] || [];
+	},
+	/**
+	 *
+	 * @summary Allocates a new video-wide ID for a given buffer in the caché.
 	 * @param {Buffer} buffer
 	 * @param {string} mId
-	 * @param {string} suf
+	 * @param {string} prefix
+	 * @param {string} suffix
 	 */
-	saveNew(buffer, mId, suf) {
-		var t = caché[mId] = caché[mId] || {}, aId;
-		this.save(mId, aId = this.generateId('', suf, t), buffer);
+	newItem(buffer, mId, prefix = "", suffix = "") {
+		localCaché[mId] = localCaché[mId] || [];
+		var stored = localCaché[mId];
+		var aId = this.generateId(prefix, suffix, stored);
+		this.save(mId, aId, buffer);
 		return aId;
 	},
 	/**
-	 * 
+	 *
 	 * @param {string} mId
-	 * @param {string} aId 
+	 * @param {string} aId
+	 * @returns {Buffer}
 	 */
 	load(mId, aId) {
 		if (!this.validAssetId(aId)) return;
-
-		/** @type {vcType} */
-		const stored = caché[mId];
+		const stored = localCaché[mId];
 		if (!stored) return null;
 
 		const path = `${cachéFolder}/${mId}.${aId}`;
 		stored.time = new Date();
-		return stored[aId] ? fs.readFileSync(path) : null;
+		if (stored.includes(aId)) {
+			return fs.readFileSync(path);
+		}
 	},
 	/**
-	 * 
+	 *
+	 * @summary Transfers all caché data as if 'old' had never existed.
 	 * @param {string} old
-	 * @param {string} nëw 
+	 * @param {string} nëw
+	 * @returns {void}
 	 */
 	transfer(old, nëw) {
-		if (nëw == old || !caché[old]) return;
-		Object.keys(caché[nëw] = caché[old]).forEach(aId => {
+		if (nëw == old || !localCaché[old]) return;
+		(localCaché[nëw] = localCaché[old]).forEach((aId) => {
 			const oldP = `${cachéFolder}/${old}.${aId}`;
 			const nëwP = `${cachéFolder}/${nëw}.${aId}`;
 			fs.renameSync(oldP, nëwP);
 		});
-		delete caché[old];
+		delete localCaché[old];
 	},
 	/**
 	 *
 	 * @param {string} mId
-	 * @param {boolean} removeMovie
+	 * @param {boolean} setToEmpty
+	 * @returns {void}
 	 */
-	clear(mId, removeMovie = false) {
-		const stored = caché[mId];
-		Object.keys(stored).forEach(aId => size -= aId != 'time' ? stored[aId].length : 0);
-		return removeMovie ? delete caché[mId] : caché[mId] = {};
+	clearTable(mId, setToEmpty = true) {
+		const stored = localCaché[mId];
+		if (!stored) return;
+		stored.forEach((aId) => {
+			if (aId != "time") {
+				var path = `${cachéFolder}/${mId}.${aId}`;
+				size -= fs.statSync(path).size;
+				fs.unlinkSync(path);
+			}
+		});
+		if (setToEmpty) localCaché[mId] = [];
+		else delete localCaché[mId];
 	},
-}
+};

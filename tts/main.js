@@ -1,18 +1,20 @@
 const voices = require("./info").voices;
 const qs = require("querystring");
+const brotli = require("brotli");
 const https = require("https");
+const md5 = require("js-md5");
 const http = require("http");
 
 // Fallback option for compatibility between Wrapper and https://github.com/Windows81/Text2Speech-Haxxor-JS.
 let get;
 try {
-	get = require("../request/get");
+	get = require("../misc/get");
 } catch {
 	get = require("./get");
 }
 
-module.exports = function (voiceName, text) {
-	return new Promise((res, rej) => {
+module.exports = (voiceName, text) => {
+	return new Promise(async (res, rej) => {
 		const voice = voices[voiceName];
 		switch (voice.source) {
 			case "nextup": {
@@ -23,10 +25,11 @@ module.exports = function (voiceName, text) {
 						text: text,
 					});
 					var buffers = [];
-					var req = https.get(`https://nextup.com/ivona/php/nextup-polly/CreateSpeech/CreateSpeechGet3.php?${q}`, (r) => {
+					https.get(`https://nextup.com/ivona/php/nextup-polly/CreateSpeech/CreateSpeechGet3.php?${q}`, (r) => {
 						r.on("data", (d) => buffers.push(d));
 						r.on("end", () => {
 							const loc = Buffer.concat(buffers).toString();
+							if (!loc.startsWith("http")) rej();
 							get(loc).then(res).catch(rej);
 						});
 						r.on("error", rej);
@@ -68,7 +71,7 @@ module.exports = function (voiceName, text) {
 						voiceText: text,
 					});
 					var buffers = [];
-					var req = https.get(
+					https.get(
 						{
 							host: "www.voiceforge.com",
 							path: `/demos/createAudio.php?${q}`,
@@ -89,25 +92,26 @@ module.exports = function (voiceName, text) {
 				break;
 			}
 			case "vocalware": {
+				var [eid, lid, vid] = voice.arg;
+				var cs = md5(`${eid}${lid}${vid}${text}1mp35883747uetivb9tb8108wfj`);
 				var q = qs.encode({
 					EID: voice.arg[0],
 					LID: voice.arg[1],
 					VID: voice.arg[2],
 					TXT: text,
+					EXT: "mp3",
 					IS_UTF8: 1,
-					HTTP_ERR: 1,
-					ACC: 3314795,
-					API: 2292376,
-					vwApiVersion: 2,
-					CB: "vw_mc.vwCallback",
+					ACC: 5883747,
+					cache_flag: 3,
+					CS: cs,
 				});
 				var req = https.get(
 					{
 						host: "cache-a.oddcast.com",
 						path: `/tts/gen.php?${q}`,
 						headers: {
-							Referer: "https://www.vocalware.com/index/demo",
-							Origin: "https://www.vocalware.com",
+							Referer: "https://www.oddcast.com/",
+							Origin: "https://www.oddcast.com/",
 							"User-Agent":
 								"Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/75.0.3770.100 Safari/537.36",
 						},
@@ -185,6 +189,7 @@ module.exports = function (voiceName, text) {
 							const beg = html.indexOf("&snd_url=") + 9;
 							const end = html.indexOf("&", beg);
 							const sub = html.subarray(beg + 4, end).toString();
+							if (!sub.startsWith("://")) return rej();
 							get(`https${sub}`).then(res).catch(rej);
 						});
 						r.on("error", rej);
