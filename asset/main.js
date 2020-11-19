@@ -56,8 +56,16 @@ module.exports = {
 			var ids = fUtil.getValidFileIndicies("char-", ".xml");
 			for (const i in ids) {
 				var id = `c-${ids[i]}`;
+				const match = fs.readFileSync(`./_SAVED/char-${v.toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
+				var name
+				try{
+					name = match[1]
+				}
+				catch(err){
+					name = undefined
+				}
 				if (!theme || theme == (await chars.getTheme(id))) {
-					table.unshift({ theme: theme, id: id });
+					table.unshift({ theme: theme, id: id, name: name });
 				}
 			}
 			res(table);

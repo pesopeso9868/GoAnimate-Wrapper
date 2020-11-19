@@ -14,7 +14,18 @@ module.exports = function (req, res, url) {
 	loadPost(req, res).then(([data]) => {
 		res.setHeader("Content-Type", "text/html; charset=UTF-8");
 		const p = `${folder}/${data.themeId}.xml`;
-		fs.createReadStream(p).pipe(res);
+		var readStream = fs.createReadStream(p)
+		// Who is the debil that did not handle stream error event?
+		readStream.on("open", function(){
+			readStream.pipe(res)
+		});
+		readStream.on("error", function(err){
+			if(err.code === "ENOENT"){
+				console.log(`premade xml ${data.themeId} not found`)
+			} else{
+				console.log("FUCK")
+			}
+		});
 	});
 	return true;
 };
