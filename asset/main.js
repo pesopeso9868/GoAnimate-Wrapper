@@ -56,9 +56,10 @@ module.exports = {
 			var ids = fUtil.getValidFileIndicies("char-", ".xml");
 			for (const i in ids) {
 				var id = `c-${ids[i]}`;
-				const match = fs.readFileSync(`./_SAVED/char-${v.toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
-				var name
+				//HELLO?????? ITS LITERALLY FUCKING THERE THE SAVED FOLDER IS THERE
+				var name;
 				try{
+					const match = fs.readFileSync(`./_SAVED/char-${i.toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
 					name = match[1]
 				}
 				catch(err){

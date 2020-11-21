@@ -11,6 +11,7 @@ const nodezip = require('node-zip');
 const store = process.env.STORE_URL;
 const xmldoc = require('xmldoc');
 const fs = require('fs');
+const builder = require("xmlbuilder2");
 
 function name2Font(font) {
 	switch (font) {
@@ -165,7 +166,8 @@ module.exports = {
 		const zip = nodezip.create();
 		mId && caché.saveTable(mId);
 		const themes = { common: true }, assetTypes = {};
-		var ugcString = `${header}<theme id="ugc" name="ugc">`;
+		var xml = builder.create({version:"1.0", encoding: "utf-8"}).ele("theme", {id:"ugc",name:"ugc"});
+		var ugcString;// = `${header}<theme id="ugc" name="ugc">`;
 		fUtil.addToZip(zip, 'movie.xml', xmlBuffer);
 		const xml = new xmldoc.XmlDocument(xmlBuffer);
 		const elements = xml.children;
@@ -181,8 +183,9 @@ module.exports = {
 						const t = assetTypes[aId];
 						//const n = `ugc.${t}.${aId}`;
 						//fUtil.addToZip(zip, n, b);
-						ugcString += `<sound subtype="${t.subtype}" id="${aId}" enc_asset_id="${aId
-							}" name="${t.name}" downloadtype="progressive" duration="${d}"/>`;
+						xml.ele("sound", {subtype: t.subtype, id:aId, enc_asset_id:aId, name: t.name, downloadtype: "progressive", duration: d}).up();
+						/*ugcString += `<sound subtype="${t.subtype}" id="${aId}" enc_asset_id="${aId
+							}" name="${t.name}" downloadtype="progressive" duration="${d}"/>`;*/
 						caché.save(mId, aId, b);
 					}
 					break;
@@ -199,7 +202,8 @@ module.exports = {
 					themes[theme] = true;
 
 					fUtil.addToZip(zip, element.attr.file_name, sub);
-					ugcString += `<char id="${id}"cc_theme_id="${theme}"><tags/></char>`;
+					xml.ele("char", {id: id, cc_theme_id: theme}).ele("tags").up().up();
+					/*ugcString += `<char id="${id}"cc_theme_id="${theme}"><tags/></char>`;*/
 					break;
 				}
 
@@ -279,7 +283,8 @@ module.exports = {
 											const charTheme = await char.getTheme(id);
 											fileName = `${theme}.char.${id}.xml`;
 											if (theme == 'ugc')
-												ugcString += `<char id="${id}"cc_theme_id="${charTheme}"><tags/></char>`;
+												// ugcString += `<char id="${id}"cc_theme_id="${charTheme}"><tags/></char>`;
+												xml.ele("char", {id: id, cc_theme_id: charTheme}).ele("tags").up().up();
 										} catch (e) {
 											console.log(e);
 										}
@@ -362,9 +367,11 @@ module.exports = {
 			fUtil.addToZip(zip, `${t}.xml`, file);
 		});
 
+		ugcString = xml.up().end({prettyPrint: false})
+
 		fUtil.addToZip(zip, 'themelist.xml', Buffer.from(`${header}<themes>${
 			themeKs.map(t => `<theme>${t}</theme>`).join('')}</themes>`));
-		fUtil.addToZip(zip, 'ugc.xml', Buffer.from(ugcString + `</theme>`));
+		fUtil.addToZip(zip, 'ugc.xml', Buffer.from(ugcString));// + `</theme>`));
 		return await zip.zip();
 	},
 	/**

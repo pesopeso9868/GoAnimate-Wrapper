@@ -7,13 +7,6 @@
 			"statusCode": 302,
 			"content": ""
 		},
-		"/$": {
-			"headers": {
-				"Location": "pages/html/list.html"
-			},
-			"statusCode": 302,
-			"content": ""
-		},
 		"/go/character_creator/family": {
 			"headers": {
 				"Location": "/cc?themeId=family&bs=adam"

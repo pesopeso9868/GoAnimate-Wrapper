@@ -5,80 +5,97 @@ const nodezip = require("node-zip");
 const base = Buffer.alloc(1, 0);
 const asset = require("./main");
 const http = require("http");
+const builder = require("xmlbuilder2");
 
 async function listAssets(data, makeZip) {
 	var xmlString;
+	var xml = builder.create({version:"1.0", encoding: "utf-8"}).ele("ugc", {"more":0})
 	switch (data.type) {
+		//HURRAAAAA XMLBUILDER2
 		case "char": {
 			const chars = await asset.chars(data.themeId);
-			xmlString = `${header}<ugc more="0">${chars
+			chars.map((v) => xml.ele("char", {id: v.id, name: v.name?v.name:"Untitled", cc_theme_id: v.theme, thumbnail_url: `http://127.0.0.1/char_thumbs/${v.id}.png`, copyable: "Y"})
+					.ele("tags").up()
+				.up())
+			/*xmlString = `${header}<ugc more="0">${chars
 				.map(
 					(v) =>
 						`<char id="${v.id}" name="${v.name?v.name:"Untitled"}" cc_theme_id="${v.theme}" thumbnail_url="http://localhost/char_thumbs/${v.id}.png" copyable="Y"><tags/></char>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "bg": {
 			var files = asset.list(data.movieId, "bg");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => xml.ele("background", {subtype: 0, id: v.id, name: v.name, enable: "Y"}).up());
+			/*xmlString = `${header}<ugc more="0">${files
 				.map((v) => `<background subtype="0" id="${v.id}" name="${v.name}" enable="Y"/>`)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "bgmusic": {
 			var files = asset.list(data.movieId, "bgmusic");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => xml.ele("sound", {subtype: "bgmusic", id: v.id, name: v.name, enable: "Y", duration: v.duration, downloadtype: "progressive", enc_asset_id: v.id, signature: v.signature}).up());
+			/*xmlString = `${header}<ugc more="0">${files
 				.map(
 					(v) =>
 						`<sound subtype="bgmusic" id="${v.id}" name="${v.name}" enable="Y" duration="${v.duration}" downloadtype="progressive" enc_asset_id="${v.id}" signature="${v.signature}"/>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "soundeffect": {
 			var files = asset.list(data.movieId, "soundeffect");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => xml.ele("sound", {subtype: "soundeffect", id: v.id, name: v.name, enable: "Y", duration: v.duration, downloadtype: "progressive", enc_asset_id: v.id, signature: v.signature}).up());
+			/*xmlString = `${header}<ugc more="0">${files
 				.map(
 					(v) =>
 						`<sound subtype="soundeffect" id="${v.id}" name="${v.name}" enable="Y" duration="${v.duration}" downloadtype="progressive" enc_asset_id="${v.id}" signature="${v.signature}"/>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "sound":
 		case "voiceover": {
 			var files = asset.list(data.movieId, "voiceover");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => xml.ele("sound", {subtype: "voiceover", id: v.id, name: v.name, enable: "Y", duration: v.duration, downloadtype: "progressive", enc_asset_id: v.id, signature: v.signature}).up());
+			/*xmlString = `${header}<ugc more="0">${files
 				.map(
 					(v) =>
 						`<sound subtype="voiceover" id="${v.id}" name="${v.name}" enable="Y" duration="${v.duration}" downloadtype="progressive" enc_asset_id="${v.id}" signature="${v.signature}"/>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "movie": {
 			var files = asset.list(data.movieId, "movie");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => 
+				xml.ele("movie", {id: v.id, enc_asset_id: v.id, path: `/_SAVED/${v.id}`, numScene: 1, title: v.name, thumbnail_url:`/movie_thumbs/${v.id}.png`})
+						.ele("tags").up()
+					.up())
+			/*xmlString = `${header}<ugc more="0">${files
 				.map(
 					(v) =>
 						`<movie id="${v.id}" enc_asset_id="${v.id}" path="/_SAVED/${v.id}" numScene="1" title="${v.name}" thumbnail_url="/movie_thumbs/${v.id}.png"><tags></tags></movie>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 		case "prop":
 		default: {
 			var files = asset.list(data.movieId, "prop");
-			xmlString = `${header}<ugc more="0">${files
+			files.map((v) => 
+				xml.ele("prop", {subtype: 0, id: v.id, name: v.name, enable: "Y", holdable: 0, headable: 0, placeable: 1, facing: "left", width: 0, height: 0, duration: 0, enc_asset_id: v.id}).up());
+			/*xmlString = `${header}<ugc more="0">${files
 				.map(
 					(v) =>
 						`<prop subtype="0" id="${v.id}" name="${v.name}" enable="Y" holdable="0" headable="0" placeable="1" facing="left" width="0" height="0" duration="0" enc_asset_id="${v.id}"/>`
 				)
-				.join("")}</ugc>`;
+				.join("")}</ugc>`;*/
 			break;
 		}
 	}
+	xmlString = xml.up().end({prettyPrint: false}).replace(/\<\/?roote\>/g,"");
 
 	if (makeZip) {
 		const zip = nodezip.create();

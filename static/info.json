@@ -1,13 +1,12 @@
 {
 	"GET": {
-		"/index.html": {
+		"^/$": {
 			"headers": {
-				"Location": "/html/list.html"
+				"Location": "/index.html"
 			},
-			"statusCode": 302,
-			"content": ""
+			"statusCode": 302
 		},
-		"/$": {
+		"/index.html": {
 			"headers": {
 				"Location": "/html/list.html"
 			},
@@ -27,6 +26,7 @@
 			"content": "<cross-domain-policy><allow-access-from domain=\"*\"/></cross-domain-policy>"
 		},
 		"/cc.swf": {},
+		"/goapi/(.*?)": {},
 		"/go_full.swf": {},
 		"/favicon.ico": {},
 		"/char-default\\.png": {
@@ -35,21 +35,15 @@
 			},
 			"content": ""
 		},
-		"/html/([^?]+html).*": {
+		"/html/list.html": {
 			"contentReplace": true,
-			"regexLink": "/html/$1",
-			"headers": {
-				"Content-Type": "text/html; charset=UTF-8"
-			}
-		},
-		"/html/([^?]+).*": {
-			"regexLink": "/html/$1",
 			"headers": {
 				"Content-Type": "text/html; charset=UTF-8"
 			}
 		}
 	},
 	"POST": {
+		"/goapi/(.*?)": {},
 		"/goapi/getUserWatermarks/": {
 			"headers": {
 				"Content-Type": "text/html; charset=UTF-8"

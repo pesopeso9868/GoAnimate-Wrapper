@@ -2,7 +2,7 @@ const pjson = require("../package.json");
 const stuff = require("./info");
 const http = require("http");
 const fs = require("fs");
-
+const disallowed = ["/asset","/character","/data","/misc","/movie","/node_modules","/request","/starter","/static","/thelooks","/theme","/tts","/.git","/.vscode"]
 /**
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
@@ -27,11 +27,11 @@ module.exports = function (req, res, url) {
 				if (t.content !== undefined) {
 					res.end(t.content);
 				} else if (t.contentReplace) {
-					content = fs.readFileSync(`./${link}`, "utf8");
+					content = fs.readFileSync(path, "utf8");
 					content = content.replace(/VERSIÖN/g, pjson.versionStr);
 					res.end(content);
 				} else {
-					fs.createReadStream(path).pipe(res);
+					res.end(fs.readFileSync(path))
 				}
 			} catch (e) {
 				res.statusCode = t.statusCode || 404;
@@ -39,6 +39,27 @@ module.exports = function (req, res, url) {
 			}
 			return true;
 		}
+	}
+	// When all else fails...
+	try{
+		//However if it's one of our source js files give 403. You can't do that
+		const file = fs.readFileSync(`.${url.path}`);
+		if (!disallowed.some((i)=>url.path.startsWith(i))) {
+			if(file && (/^(?!(\/).*\1).*/g.test(url.path))){
+				throw new Error("Forbidden")
+			}
+			res.end(file);
+			return true;
+		}
+		else{
+			throw new Error("Forbidden")
+		}
+	}
+	catch(err){
+		console.log(err)
+		console.log(`${url.path} Not Found`)
+		res.statusCode = 404;
+		res.end();
 	}
 	return false;
 };

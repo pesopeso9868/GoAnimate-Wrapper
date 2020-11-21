@@ -42,6 +42,8 @@
 	<theme id="willie" name="Willie Nelson" cc_theme_id="willie" enable="N" />
 	<theme id="toonadv" name="Toon Adventure" cc_theme_id="willie" enable="N" />
 	<theme id="commondupe" name="Common" thumb="matchboy-stand.swf" cc_theme_id="commondupe" />
+	<theme id="scripttest" name="its lit" thumb="" />
+	<theme id="lumen" name="Light and shadow" thumb="" />
 	<word></word>
 	<whiteword />
 	<excludeAssetIDs />

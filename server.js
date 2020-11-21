@@ -24,6 +24,7 @@ const tsv = require("./tts/voices");
 const tsl = require("./tts/load");
 const evt = require("./events");
 const url = require("url");
+const the = require("./thelooks/page")
 
 const functions = [
 	mvL,
@@ -48,6 +49,7 @@ const functions = [
 	mvu,
 	stp,
 	stl,
+	the
 ];
 
 module.exports = http
