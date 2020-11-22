@@ -52,12 +52,12 @@ module.exports = function(req, res, url){
 	</body>
 </html>`)
 			});
-			break;
+			return true;
 		}
 		case "/list":{
 			res.writeHead(302, {"Location":"/pages/html/list.html"});
-			break;
+			return true;
 		}
 	}
-	return true;
+	return false;
 }

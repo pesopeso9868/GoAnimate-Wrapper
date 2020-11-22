@@ -95,7 +95,7 @@ async function listAssets(data, makeZip) {
 			break;
 		}
 	}
-	xmlString = xml.up().end({prettyPrint: false}).replace(/\<\/?roote\>/g,"");
+	xmlString = xml.up().end({prettyPrint: false});
 
 	if (makeZip) {
 		const zip = nodezip.create();

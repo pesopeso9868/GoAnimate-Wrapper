@@ -26,16 +26,20 @@ module.exports = function (req, res, url) {
 				res.statusCode = t.statusCode || 200;
 				if (t.content !== undefined) {
 					res.end(t.content);
+					return true;
 				} else if (t.contentReplace) {
 					content = fs.readFileSync(path, "utf8");
 					content = content.replace(/VERSIÖN/g, pjson.versionStr);
 					res.end(content);
+					return true;
 				} else {
 					res.end(fs.readFileSync(path))
+					return true;
 				}
 			} catch (e) {
 				res.statusCode = t.statusCode || 404;
 				res.end();
+				return false;
 			}
 			return true;
 		}
@@ -60,6 +64,7 @@ module.exports = function (req, res, url) {
 		console.log(`${url.path} Not Found`)
 		res.statusCode = 404;
 		res.end();
+		return false;
 	}
 	return false;
 };
