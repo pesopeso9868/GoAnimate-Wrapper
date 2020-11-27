@@ -103,21 +103,8 @@ module.exports = {
 			var prefix = id.substr(0, i);
 			var suffix = id.substr(i + 1);
 
-			switch (prefix) {
+			switch (prefix.toLowerCase()) {
 				case "c":
-<<<<<<< HEAD
-					fs.readFile(fUtil.getFileIndex("char-", ".xml", suffix), (e, b) => {
-						if (e) { rej(Buffer.from(util.xmlFail())); return; }
-						res(b);
-					});
-					break;
-
-				case "C":
-					fs.readFile(fUtil.getFileString("char-", ".xml", suffix), (e, b) => {
-						if (e) { rej(Buffer.from(util.xmlFail())); return; }
-						res(b);
-=======
-				case "C":
 					fs.readFile(getCharPath(id), (e, b) => {
 						if (e) {
 							var fXml = util.xmlFail();
@@ -125,7 +112,6 @@ module.exports = {
 						} else {
 							res(b);
 						}
->>>>>>> upstream/master
 					});
 					break;
 
