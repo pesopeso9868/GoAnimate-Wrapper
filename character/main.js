@@ -25,13 +25,12 @@ function addTheme(id, buffer) {
 
 function save(id, data) {
 	const i = id.indexOf("-");
-	//const prefix = id.substr(0, i); ESLint tells me this isn't used so we don't need it
+	const prefix = id.substr(0, i); ESLint tells me this isn't used so we don't need it
 	const suffix = id.substr(i + 1);
-	switch (prefix) {
+	switch (prefix.toLowerCase()) {
 		case "c":
 			fs.writeFileSync(fUtil.getFileIndex("char-", ".xml", suffix), data);
 			break;
-		case "C":
 	}
 	addTheme(id, data);
 	return id;
@@ -52,7 +51,6 @@ function getCharPath(id) {
 	switch (prefix) {
 		case "c":
 			return fUtil.getFileIndex("char-", ".xml", suffix);
-		case "C":
 		default:
 			return `${cachéFolder}/char.${id}.xml`;
 	}
@@ -68,7 +66,6 @@ function getThumbPath(id) {
 	switch (prefix) {
 		case "c":
 			return fUtil.getFileIndex("char-", ".png", suffix);
-		case "C":
 		default:
 			return `${cachéFolder}/char.${id}.png`;
 	}
@@ -80,9 +77,9 @@ module.exports = {
 	 * @returns {Promise<string>}
 	 */
 	/**
-	 * [getTheme description]
-	 * @param  {[type]} id [description]
-	 * @return {[type]}    [description]
+	 * Get theme from character\main.js themes object
+	 * @param  {string} id Theme id
+	 * @return {Promise<String>}    [description]
 	 */
 	getTheme(id) {
 		return new Promise((res, rej) => {
@@ -106,15 +103,10 @@ module.exports = {
 			switch (prefix.toLowerCase()) {
 				case "c":
 					fs.readFile(getCharPath(id), (e, b) => {
-						if (e) {
-							var fXml = util.xmlFail();
-							rej(Buffer.from(fXml));
-						} else {
-							res(b);
-						}
+						if (e) return rej(Buffer.from(util.xmlFail()));
+						res(b);
 					});
 					break;
-
 				case "":
 				default: {
 					// Blank prefix is left here for backwards-compatibility purposes.
@@ -130,40 +122,31 @@ module.exports = {
 								.toString("utf8")
 								.split("\n")
 								.find((v) => v.substr(0, xNumWidth) == lnNum);
-							if (line) {
-								res(Buffer.from(line.substr(xNumWidth)));
-							} else {
-								rej(Buffer.from(util.xmlFail()));
+							if (!line) {
+								return rej(Buffer.from(util.xmlFail()));
 							}
+							res(Buffer.from(line.substr(xNumWidth)));
 						})
-						.catch((e) => rej(Buffer.from(util.xmlFail())));
+						.catch((e) => rej(Buffer.from(util.xmlFail(e.toString()))));
 					break;
 				}
 			}
 		});
 	},
 	/**
-	 * @param {Buffer} data
-	 * @param {string} id
-	 * @returns {Promise<string>}
+	 * Save character.
+	 * @param {Buffer} data XML data of the character
+	 * @param {string} id ID destination
+	 * @returns {Promise<string>} The ID if save succeeded, else undefined
 	 */
 	save(data, id) {
 		return new Promise((res, rej) => {
 			if (id) {
 				const i = id.indexOf("-");
 				const prefix = id.substr(0, i);
-				switch (prefix) {
+				switch (prefix.toLowerCase()) {
 					case "c":
-<<<<<<< HEAD
-						fs.writeFile(fUtil.getFileIndex("char-", ".xml", suffix), data, (e) => (e ? rej() : res(id)));
-						break;
-					case "C":
-						fs.writeFile(fUtil.getFileString("char-", ".xml", suffix), data, (e) => (e ? rej() : res(id)));
-						break;
-=======
-					case "C":
 						fs.writeFile(getCharPath(id), data, (e) => (e ? rej() : res(id)));
->>>>>>> upstream/master
 					default:
 						res(save(id, data));
 						break;
@@ -195,12 +178,8 @@ module.exports = {
 	loadThumb(id) {
 		return new Promise((res, rej) => {
 			fs.readFile(getThumbPath(id), (e, b) => {
-				if (e) {
-					var fXml = util.xmlFail();
-					rej(Buffer.from(fXml));
-				} else {
-					res(b);
-				}
+				if (e) return rej(Buffer.from(util.xmlFail()));
+				res(b);
 			});
 		});
 	},
