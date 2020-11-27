@@ -1,12 +1,12 @@
 const loadPost = require("../misc/post_body");
 const asset = require("./main");
 const http = require("http");
-
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * Load an asset.
+ * @param  {IncomingMessage} req [description]
+ * @param  {ServerResponse} res [description]
+ * @param  {UrlWithParsedQuery} url [description]
+ * @return {bool}     Whether or not loading the asset was successful.
  */
 module.exports = function (req, res, url) {
 	switch (req.method) {
@@ -46,11 +46,8 @@ module.exports = function (req, res, url) {
 					});
 					return true;
 				}
-				default:
-					return;
 			}
 		}
-		default:
-			return;
 	}
+	return false;
 };

@@ -36,10 +36,7 @@
 			"content": ""
 		},
 		"/html/list.html": {
-			"contentReplace": true,
-			"headers": {
-				"Content-Type": "text/html; charset=UTF-8"
-			}
+			"contentReplace": true
 		}
 	},
 	"POST": {

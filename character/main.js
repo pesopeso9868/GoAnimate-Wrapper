@@ -8,16 +8,24 @@ const fw = process.env.FILE_WIDTH;
 const fs = require("fs");
 const themes = {};
 
+//Instead of this indexOf nonsense, why not use regex?
+/**
+ * Add a theme to the character\main.js themes variable.
+ * @param {[type]} id     [description]
+ * @param {[type]} buffer [description]
+ * @returns {[type]} [description]
+ */
 function addTheme(id, buffer) {
-	const beg = buffer.indexOf(`theme_id="`) + 10;
-	const end = buffer.indexOf(`"`, beg);
-	const theme = buffer.subarray(beg, end).toString();
-	return (themes[id] = theme);
+	// const beg = buffer.indexOf(`theme_id="`) + 10;
+	// const end = buffer.indexOf(`"`, beg);
+	// const theme = buffer.subarray(beg, end).toString();
+	const theme = buffer.toString().match(/theme_id="(.*?)"/)
+	if (theme && theme[1]) {return (themes[id] = theme[1])};
 }
 
 function save(id, data) {
 	const i = id.indexOf("-");
-	const prefix = id.substr(0, i);
+	//const prefix = id.substr(0, i); ESLint tells me this isn't used so we don't need it
 	const suffix = id.substr(i + 1);
 	fs.writeFileSync(fUtil.getFileIndex("char-", ".xml", suffix), data);
 	addTheme(id, data);
@@ -33,6 +41,11 @@ module.exports = {
 	 * @param {string} id
 	 * @returns {Promise<string>}
 	 */
+	/**
+	 * [getTheme description]
+	 * @param  {[type]} id [description]
+	 * @return {[type]}    [description]
+	 */
 	getTheme(id) {
 		return new Promise((res, rej) => {
 			if (themes[id]) res(themes[id]);
@@ -42,8 +55,9 @@ module.exports = {
 		});
 	},
 	/**
-	 * @param {string} id
-	 * @returns {Promise<Buffer>}
+	 * Load a character.
+	 * @param  {string} id ID of the character.
+	 * @return {Promise<Buffer>}    XML of the character stored in a Buffer.
 	 */
 	load(id) {
 		return new Promise((res, rej) => {
@@ -54,23 +68,15 @@ module.exports = {
 			switch (prefix) {
 				case "c":
 					fs.readFile(fUtil.getFileIndex("char-", ".xml", suffix), (e, b) => {
-						if (e) {
-							var fXml = util.xmlFail();
-							rej(Buffer.from(fXml));
-						} else {
-							res(b);
-						}
+						if (e) { rej(Buffer.from(util.xmlFail())); return; }
+						res(b);
 					});
 					break;
 
 				case "C":
 					fs.readFile(fUtil.getFileString("char-", ".xml", suffix), (e, b) => {
-						if (e) {
-							var fXml = util.xmlFail();
-							rej(Buffer.from(fXml));
-						} else {
-							res(b);
-						}
+						if (e) { rej(Buffer.from(util.xmlFail())); return; }
+						res(b);
 					});
 					break;
 
@@ -97,6 +103,7 @@ module.exports = {
 							}
 						})
 						.catch((e) => rej(Buffer.from(util.xmlFail())));
+					break;
 				}
 			}
 		});
@@ -115,21 +122,25 @@ module.exports = {
 				switch (prefix) {
 					case "c":
 						fs.writeFile(fUtil.getFileIndex("char-", ".xml", suffix), data, (e) => (e ? rej() : res(id)));
+						break;
 					case "C":
 						fs.writeFile(fUtil.getFileString("char-", ".xml", suffix), data, (e) => (e ? rej() : res(id)));
+						break;
 					default:
 						res(save(id, data));
+						break;
 				}
 			} else {
-				saveId = `c-${fUtil.getNextFileId("char-", ".xml")}`;
+				var saveId = `c-${fUtil.getNextFileId("char-", ".xml")}`;
 				res(save(saveId, data));
 			}
 		});
 	},
 	/**
-	 * @param {Buffer} data
-	 * @param {string} id
-	 * @returns {Promise<string>}
+	 * Save character thumbnail.
+	 * @param {Buffer} data Thumbnail data.
+	 * @param  {string} id ID of the character.
+	 * @return {Promise<string>}    ID of the character.
 	 */
 	saveThumb(data, id) {
 		return new Promise((res, rej) => {
@@ -140,8 +151,9 @@ module.exports = {
 		});
 	},
 	/**
-	 * @param {string} id
-	 * @returns {Promise<Buffer>}
+	 * Load character thumbnail.
+	 * @param  {string} id ID of the character.
+	 * @return {Promise<Buffer>}    XML of the thumbnail stored in a Buffer.
 	 */
 	loadThumb(id) {
 		return new Promise((res, rej) => {

@@ -2,13 +2,13 @@ const meta = require("../movie/main")
 module.exports = function(req, res, url){
 	if (req.method != 'GET') return;
 	const query = url.query;
-	res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 	switch(url.pathname){
 		case "/embed":{
+			res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 			if(!query.movieId){
 				res.end(`<body><h3>ostrich seats with the frog eyes</h3></body>`)
 				return;
-			};
+			}
 			var actualid = ""
 			var fixedid = query.movieId
 			if(query.movieId.startsWith("m-")){
@@ -47,7 +47,7 @@ module.exports = function(req, res, url){
 	</head>
 	<body>
 		<main>
-			<h3>Movie ${actualid}</h3><h2 id="title">${penis.title}</h3><p>${penis.description}</p><iframe id="player" scrolling="no" allowTransparency="true" frameborder="0" src="/player?movieId=${fixedid}" width="640" height="360"></iframe>
+			<h3>Movie ${actualid}</h3><h2 id="title">${penis.title}</h3><p>${penis.description?penis.description:""}</p><iframe id="player" scrolling="no" allowTransparency="true" frameborder="0" src="/player?movieId=${fixedid}" width="640" height="360"></iframe>
 		</main>
 	</body>
 </html>`)
@@ -55,9 +55,11 @@ module.exports = function(req, res, url){
 			return true;
 		}
 		case "/list":{
+			res.setHeader('Content-Type', 'text/html; charset=UTF-8');
 			res.writeHead(302, {"Location":"/pages/html/list.html"});
 			return true;
 		}
+		default:
+			return;
 	}
-	return false;
 }

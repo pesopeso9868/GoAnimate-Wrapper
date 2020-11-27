@@ -3,6 +3,12 @@ const caché = require("../data/caché");
 const fUtil = require("../misc/file");
 const fs = require("fs");
 module.exports = {
+	/**
+	 * Call caché.load with provided arguments.
+	 * @param  {string} mId The movie ID.
+	 * @param  {string} aId The asset ID.
+	 * @return {Buffer}     The asset, stored in a Buffer.
+	 */
 	load(mId, aId) {
 		return caché.load(mId, aId);
 	},
@@ -38,6 +44,11 @@ module.exports = {
 		});
 		return ret;
 	},
+	/**
+	 * List characters for a theme.
+	 * @param  {str} theme The theme ID.
+	 * @return {Promise<Array>}       A Promise containing the theme list.
+	 */
 	chars(theme) {
 		return new Promise(async (res, rej) => {
 			switch (theme) {
@@ -59,7 +70,7 @@ module.exports = {
 				//HELLO?????? ITS LITERALLY FUCKING THERE THE SAVED FOLDER IS THERE
 				var name;
 				try{
-					const match = fs.readFileSync(`./_SAVED/char-${i.toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
+					const match = fs.readFileSync(`./_SAVED/char-${ids[i].toString().padStart(7,"0")}.xml`, "utf8").match(/char_name="(.*?)"/)
 					name = match[1]
 				}
 				catch(err){

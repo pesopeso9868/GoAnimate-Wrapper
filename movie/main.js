@@ -7,11 +7,12 @@ const fs = require("fs");
 
 module.exports = {
 	/**
-	 *
-	 * @param {Buffer} movieZip
-	 * @param {string} nëwId
-	 * @param {string} oldId
-	 * @returns {Promise<string>}
+	 * Save the movie.
+	 * @param  {string} movieZip Path to zip file.
+	 * @param  {Buffer} thumb    Image data for thumbnail.
+	 * @param  {string} oldId    Old movie ID.
+	 * @param  {string} nëwId=oldId    New movie ID.
+	 * @return {Promise<string>}          New movie ID.
 	 */
 	save(movieZip, thumb, oldId, nëwId = oldId) {
 		// Saves the thumbnail of the respective video.

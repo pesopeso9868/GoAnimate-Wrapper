@@ -7,6 +7,12 @@ const asset = require("./main");
 const http = require("http");
 const builder = require("xmlbuilder2");
 
+/**
+ * List user assets.
+ * @param  {Object} data    An Object containing type and themeId.
+ * @param  {bool} makeZip Create a .zip file rather than an .xml file
+ * @return {Promise<Buffer>}         The list stored in a Buffer.
+ */
 async function listAssets(data, makeZip) {
 	var xmlString;
 	var xml = builder.create({version:"1.0", encoding: "utf-8"}).ele("ugc", {"more":0})

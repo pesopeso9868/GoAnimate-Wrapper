@@ -112,10 +112,10 @@ module.exports = {
 		return aId;
 	},
 	/**
-	 *
-	 * @param {string} mId
-	 * @param {string} aId
-	 * @returns {Buffer}
+	 * Load an asset from the cache folder.
+	 * @param  {string} mId The movie ID.
+	 * @param  {string} aId The asset ID.
+	 * @return {Buffer}     The asset, stored in a Buffer.
 	 */
 	load(mId, aId) {
 		if (!this.validAssetId(aId)) return;

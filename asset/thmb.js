@@ -10,7 +10,7 @@ const http = require("http");
  */
 module.exports = function (req, res, url) {
 	var path = url.pathname;
-	if (req.method != "GET" || !path.startsWith("/stock_thumbs")) return;
+	if (req.method != "GET" || !path.startsWith("/stock_thumbs")) return false;
 	get(thumbUrl + path.substr(path.lastIndexOf("/"))).then((v) => res.end(v));
 	return true;
 };

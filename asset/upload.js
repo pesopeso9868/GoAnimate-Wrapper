@@ -34,8 +34,8 @@ module.exports = function (req, res, url) {
 				fs.unlinkSync(path);
 				delete buffer;
 				res.end();
+				return true;
 			});
-			return true;
 		case "/goapi/saveSound/":
 			loadPost(req, res).then(([data, mId]) => {
 				var bytes = Buffer.from(data.bytes, "base64");
@@ -43,4 +43,5 @@ module.exports = function (req, res, url) {
 			});
 			return true;
 	}
+	return false;
 };
