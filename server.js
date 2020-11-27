@@ -22,10 +22,8 @@ const thL = require("./theme/list");
 const thl = require("./theme/load");
 const tsv = require("./tts/voices");
 const tsl = require("./tts/load");
-const evt = require("./events");
 const url = require("url");
 const the = require("./thelooks/page");
-
 const functions = [
 	mvL,
 	pmc,

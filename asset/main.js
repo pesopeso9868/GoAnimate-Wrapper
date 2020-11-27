@@ -1,7 +1,8 @@
 const chars = require("../character/main");
-const caché = require("../data/caché");
 const fUtil = require("../misc/file");
 const fs = require("fs");
+const caché = require("./caché");
+
 module.exports = {
 	/**
 	 * Call caché.load with provided arguments.
