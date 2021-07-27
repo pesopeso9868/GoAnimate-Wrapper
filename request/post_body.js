@@ -1,7 +1,8 @@
 const qs = require('querystring');
 
 /**
- * @param {boolean} parse
+ * POST handler
+ * Manages payload size
  */
 module.exports = function (req, res) {
 	return new Promise((resolve, rej) => {

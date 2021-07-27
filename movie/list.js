@@ -2,6 +2,7 @@ const movie = require("./main");
 const http = require("http");
 
 /**
+ * List movies
  * @param {http.IncomingMessage} req
  * @param {http.ServerResponse} res
  * @param {import("url").UrlWithParsedQuery} url

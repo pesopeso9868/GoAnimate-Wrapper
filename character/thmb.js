@@ -2,10 +2,12 @@ const char = require("./main");
 const http = require("http");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * { function_description }
+ *
+ * @param      {http.IncomingMessage}              req     The request
+ * @param      {http.ServerResponse}               res     The resource
+ * @param      {import("url").UrlWithParsedQuery}  url     The url
+ * @return     {boolean}                           { description_of_the_return_value }
  */
 module.exports = function (req, res, url) {
 	var path = url.pathname;

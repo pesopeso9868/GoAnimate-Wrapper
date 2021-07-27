@@ -43,10 +43,12 @@ const fUtil = require("../misc/file");
 const folder = process.env.THEME_FOLDER;
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * List themes
+ *
+ * @param      {IncomingMessage}  req     The request
+ * @param      {ServerResponse}   res     The response
+ * @param      {urlObject}        url     The url
+ * @return     {boolean}          Whether or not the function succeeded
  */
 module.exports = function (req, res, url) {
 	if (req.method != "POST" || url.path != "/goapi/getThemeList/") return;

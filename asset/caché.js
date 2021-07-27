@@ -2,10 +2,11 @@ const cachéFolder = process.env.CACHÉ_FOLDER;
 const fs = require("fs");
 
 /**
- * @summary Dictionary of hashmaps of saved assets, respective to each movie ID loaded.
- * @typedef {string[]} cTableType
- * @typedef {{[mId:string]:cTableType}} lcType
- * @type lcType
+ * @summary    Dictionary of hashmaps of saved assets, respective to each movie
+ *             ID loaded.
+ * @typedef    {string[]}                  cTableType
+ * @typedef    {{[mId:string]:cTableType}  } lcType
+ *
  */
 const localCaché = {};
 var size = 0;
@@ -22,10 +23,13 @@ fs.readdirSync(cachéFolder).forEach((v) => {
 
 module.exports = {
 	/**
-	 * @summary Generates a random ID with a given prefix and suffix that is unique to the given table.
-	 * @param {string} pre
-	 * @param {string} suf
-	 * @param {cTableType} table
+	 * Generates a random ID with a given prefix and suffix that is unique to
+	 * the given table.
+	 *
+	 * @param      {string}  [pre=""]   The preix
+	 * @param      {string}  [suf=""]   The suffix
+	 * @param      {Array}   [table=[]  ]  The table
+	 * @return     {string}  A newly generated ID
 	 */
 	generateId(pre = "", suf = "", table = []) {
 		var id;
@@ -33,6 +37,13 @@ module.exports = {
 		while (table.includes(id));
 		return id;
 	},
+
+	/**
+	 * Validate asset ID
+	 *
+	 * @param      {string}   aId     Asset ID
+	 * @return     {boolean}  Whether or not the asset ID is valid
+	 */
 	validAssetId(aId) {
 		switch (aId) {
 			case "id":
@@ -43,11 +54,12 @@ module.exports = {
 		}
 	},
 	/**
+	 * Saves a buffer in movie caché with a given ID.
 	 *
-	 * @summary Saves a buffer in movie caché with a given ID.
-	 * @param {string} mId
-	 * @param {string} aId
-	 * @param {Buffer} buffer
+	 * @param      {string}  mId     The movie ID
+	 * @param      {string}  aId     The asset ID
+	 * @param      {Buffer}  buffer  The buffer
+	 * @return     {Buffer}  The buffer
 	 */
 	save(mId, aId, buffer) {
 		if (!this.validAssetId(aId)) return;
@@ -62,11 +74,11 @@ module.exports = {
 		return buffer;
 	},
 	/**
+	 * Saves a given dictionary of buffers to caché.
 	 *
-	 * @summary Saves a given dictionary of buffers to caché.
-	 * @param {string} mId
-	 * @param {{[aId:string]:Buffer}} buffers
-	 * @returns {{[aId:string]:Buffer}}
+	 * @param      {string}  mId           The movie ID
+	 * @param      {Object}  [buffers={}]  The buffers
+	 * @return     {Object}  The buffers
 	 */
 	saveTable(mId, buffers = {}) {
 		for (const aId in buffers) {
@@ -75,10 +87,10 @@ module.exports = {
 		return buffers;
 	},
 	/**
+	 * Retrieves an array of buffers from a given video's caché.
 	 *
-	 * @summary Retrieves an array of buffers from a given video's caché.
-	 * @param {string} mId
-	 * @returns {{[aId:string]:Buffer}}
+	 * @param      {string}  mId     The movie ID
+	 * @return     {array}   An array of Buffers
 	 */
 	loadTable(mId) {
 		const buffers = {};
@@ -88,21 +100,22 @@ module.exports = {
 		return buffers;
 	},
 	/**
+	 * Retrieves the array of asset IDs for the given video.
 	 *
-	 * @summary Retrieves the array of asset IDs for the given video.
-	 * @param {string} mId
-	 * @returns {cTableType}
+	 * @param      {string}      mId     The movie ID
+	 * @return     {cTableType}  An array of asset IDs
 	 */
 	list(mId) {
 		return localCaché[mId] || [];
 	},
 	/**
+	 * Allocates a new video-wide ID for a given buffer in the caché.
 	 *
-	 * @summary Allocates a new video-wide ID for a given buffer in the caché.
-	 * @param {Buffer} buffer
-	 * @param {string} mId
-	 * @param {string} prefix
-	 * @param {string} suffix
+	 * @param      {Buffer}  buffer  The buffer
+	 * @param      {string}  mId     The movie ID
+	 * @param      {string}  prefix  The prefix
+	 * @param      {string}  suffix  The suffix
+	 * @return     {string}  The asset ID
 	 */
 	newItem(buffer, mId, prefix = "", suffix = "") {
 		localCaché[mId] = localCaché[mId] || [];
@@ -113,9 +126,10 @@ module.exports = {
 	},
 	/**
 	 * Load an asset from the cache folder.
-	 * @param  {string} mId The movie ID.
-	 * @param  {string} aId The asset ID.
-	 * @return {Buffer}     The asset, stored in a Buffer.
+	 *
+	 * @param      {string}  mId     The movie ID.
+	 * @param      {string}  aId     The asset ID.
+	 * @return     {Buffer}  The asset, stored in a Buffer.
 	 */
 	load(mId, aId) {
 		if (!this.validAssetId(aId)) return;
@@ -129,7 +143,6 @@ module.exports = {
 		}
 	},
 	/**
-	 *
 	 * @summary Transfers all caché data as if 'old' had never existed.
 	 * @param {string} old
 	 * @param {string} nëw
@@ -145,10 +158,10 @@ module.exports = {
 		delete localCaché[old];
 	},
 	/**
+	 * Clear cache
 	 *
-	 * @param {string} mId
-	 * @param {boolean} setToEmpty
-	 * @returns {void}
+	 * @param      {string}   mId                Movie ID
+	 * @param      {boolean}  [setToEmpty=true]  Empty the cache
 	 */
 	clearTable(mId, setToEmpty = true) {
 		const stored = localCaché[mId];

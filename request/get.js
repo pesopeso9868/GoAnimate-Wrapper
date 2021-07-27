@@ -1,8 +1,11 @@
 const https = require('https');
 /**
- * @param {string} url
- * @param {CredentialRequestOptions} [options]
- * @returns {Promise<Buffer>}
+ * HTTP GET
+ *
+ * @param      {<type>}           url           Request target
+ * @param      {<type>}           [options={}]  https.get  options
+ * @return     {Promise<Buffer>}  Promise. Rejected if error, Buffer if
+ *                                succeeded
  */
 module.exports = function (url, options = {}) {
 	var data = [];

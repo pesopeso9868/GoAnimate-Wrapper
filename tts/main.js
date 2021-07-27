@@ -13,6 +13,13 @@ try {
 	get = require("./get");
 }
 
+/**
+ * Text to speech handler
+ *
+ * @param      {<type>}          voiceName  The voice name
+ * @param      {(Array|number)}  text       The text
+ * @return     {Promise}         Promise, doesn't return anything
+ */
 module.exports = (voiceName, text) => {
 	return new Promise(async (res, rej) => {
 		const voice = voices[voiceName];

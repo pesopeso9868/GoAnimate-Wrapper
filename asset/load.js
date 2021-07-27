@@ -3,10 +3,11 @@ const asset = require("./main");
 const http = require("http");
 /**
  * Load an asset.
- * @param  {IncomingMessage} req [description]
- * @param  {ServerResponse} res [description]
- * @param  {UrlWithParsedQuery} url [description]
- * @return {bool}     Whether or not loading the asset was successful.
+ *
+ * @param      {IncomingMessage}     req     HTTP request object
+ * @param      {ServerResponse}      res     HTTP response object
+ * @param      {UrlWithParsedQuery}  url     HTTP url object
+ * @return     {bool}                Whether or not the function was successful
  */
 module.exports = function (req, res, url) {
 	switch (req.method) {

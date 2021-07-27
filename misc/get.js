@@ -1,8 +1,10 @@
 const https = require("https");
 /**
- * @param {import("url").UrlWithParsedQuery} url
- * @param {CredentialRequestOptions} [options]
- * @returns {Promise<Buffer>}
+ * { function_description }
+ *
+ * @param      {import("url").UrlWithParsedQuery}  url        The url
+ * @param      {CredentialRequestOptions}          [options]  The options
+ * @return     {Promise<Buffer>}                   { description_of_the_return_value }
  */
 module.exports = function (url, options = {}) {
 	var data = [];

@@ -5,10 +5,12 @@ const http = require("http");
 const fs = require("fs");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * Asset upload handler
+ *
+ * @param      {http.IncomingMessage}              req     The request
+ * @param      {http.ServerResponse}               res     The response
+ * @param      {import("url").UrlWithParsedQuery}  url     The url
+ * @return     {boolean}                           Whether or not the function succeeded
  */
 module.exports = function (req, res, url) {
 	if (req.method != "POST") return;

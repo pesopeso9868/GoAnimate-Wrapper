@@ -9,11 +9,13 @@ const fs = require("fs");
 const themes = {};
 
 //Instead of this indexOf nonsense, why not use regex?
+
 /**
  * Add a theme to the character\main.js themes variable.
- * @param {[type]} id     [description]
- * @param {[type]} buffer [description]
- * @returns {[type]} [description]
+ *
+ * @param      {[type]}  id      [description]
+ * @param      {[type]}  buffer  [description]
+ * @return     {[type]}  [description]
  */
 function addTheme(id, buffer) {
 	// const beg = buffer.indexOf(`theme_id="`) + 10;
@@ -25,7 +27,7 @@ function addTheme(id, buffer) {
 
 function save(id, data) {
 	const i = id.indexOf("-");
-	const prefix = id.substr(0, i); ESLint tells me this isn't used so we don't need it
+	const prefix = id.substr(0, i); //ESLint tells me this isn't used so we don't need it
 	const suffix = id.substr(i + 1);
 	switch (prefix.toLowerCase()) {
 		case "c":
@@ -41,8 +43,10 @@ fUtil.getValidFileIndicies("char-", ".xml").map((n) => {
 });
 
 /**
- * @param {string} id
- * @returns {string}
+ * Gets the character path.
+ *
+ * @param      {string}  id      The identifier
+ * @return     {string}  The character path.
  */
 function getCharPath(id) {
 	var i = id.indexOf("-");
@@ -56,8 +60,10 @@ function getCharPath(id) {
 	}
 }
 /**
- * @param {string} id
- * @returns {string}
+ * Gets the thumb path.
+ *
+ * @param      {string}  id      The identifier
+ * @return     {string}  The thumb path.
  */
 function getThumbPath(id) {
 	var i = id.indexOf("-");
@@ -73,13 +79,10 @@ function getThumbPath(id) {
 
 module.exports = {
 	/**
-	 * @param {string} id
-	 * @returns {Promise<string>}
-	 */
-	/**
 	 * Get theme from character\main.js themes object
-	 * @param  {string} id Theme id
-	 * @return {Promise<String>}    [description]
+	 *
+	 * @param      {string}           id      Theme id
+	 * @return     {Promise<String>}  [description]
 	 */
 	getTheme(id) {
 		return new Promise((res, rej) => {
@@ -91,8 +94,9 @@ module.exports = {
 	},
 	/**
 	 * Load a character.
-	 * @param  {string} id ID of the character.
-	 * @return {Promise<Buffer>}    XML of the character stored in a Buffer.
+	 *
+	 * @param      {string}           id      ID of the character.
+	 * @return     {Promise<Buffer>}  XML of the character stored in a Buffer.
 	 */
 	load(id) {
 		return new Promise((res, rej) => {
@@ -135,9 +139,10 @@ module.exports = {
 	},
 	/**
 	 * Save character.
-	 * @param {Buffer} data XML data of the character
-	 * @param {string} id ID destination
-	 * @returns {Promise<string>} The ID if save succeeded, else undefined
+	 *
+	 * @param      {Buffer}           data    XML data of the character
+	 * @param      {string}           id      ID destination
+	 * @return     {Promise<string>}  The ID if save succeeded, else undefined
 	 */
 	save(data, id) {
 		return new Promise((res, rej) => {
@@ -159,9 +164,10 @@ module.exports = {
 	},
 	/**
 	 * Save character thumbnail.
-	 * @param {Buffer} data Thumbnail data.
-	 * @param  {string} id ID of the character.
-	 * @return {Promise<string>}    ID of the character.
+	 *
+	 * @param      {Buffer}           data    Thumbnail data.
+	 * @param      {string}           id      ID of the character.
+	 * @return     {Promise<string>}  ID of the character.
 	 */
 	saveThumb(data, id) {
 		return new Promise((res, rej) => {
@@ -172,8 +178,9 @@ module.exports = {
 	},
 	/**
 	 * Load character thumbnail.
-	 * @param  {string} id ID of the character.
-	 * @return {Promise<Buffer>}    XML of the thumbnail stored in a Buffer.
+	 *
+	 * @param      {string}           id      ID of the character.
+	 * @return     {Promise<Buffer>}  XML of the thumbnail stored in a Buffer.
 	 */
 	loadThumb(id) {
 		return new Promise((res, rej) => {

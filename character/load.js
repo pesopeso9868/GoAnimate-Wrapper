@@ -3,10 +3,11 @@ const character = require("./main");
 const http = require("http");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * Fetch character XML
+ *
+ * @param      {http.IncomingMessage}  req     The request
+ * @param      {http.ServerResponse}   res     The response
+ * @return     {boolean}               { description_of_the_return_value }
  */
 module.exports = function (req, res) {
 	switch (req.method) {

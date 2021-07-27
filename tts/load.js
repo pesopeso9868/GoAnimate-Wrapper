@@ -7,10 +7,12 @@ const tts = require("./main");
 const http = require("http");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * Text to speech handler
+ *
+ * @param      {http.IncomingMessage}  req     The request
+ * @param      {http.ServerResponse}   res     The resource
+ * @param      {string}                url     The url
+ * @return     {boolean}               Whether or not the function succeeded
  */
 module.exports = function (req, res, url) {
 	if (req.method != "POST" || url.path != "/goapi/convertTextToSoundAsset/") return;

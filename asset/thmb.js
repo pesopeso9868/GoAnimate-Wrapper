@@ -3,10 +3,12 @@ const get = require("../misc/get");
 const http = require("http");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * Get thumbnail
+ *
+ * @param      {http.IncomingMessage}              req     The request
+ * @param      {http.ServerResponse}               res     The response
+ * @param      {import("url").UrlWithParsedQuery}  url     The url
+ * @return     {boolean}                           Whether or not the function failed
  */
 module.exports = function (req, res, url) {
 	var path = url.pathname;

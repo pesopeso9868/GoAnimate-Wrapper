@@ -11,6 +11,13 @@ var store = process.env.STORE_URL;
 var xmldoc = require("xmldoc");
 var fs = require("fs");
 
+/**
+ * Use a really long switch statement to convert external font name to internal
+ * font name
+ *
+ * @param      {string}  font    The font name
+ * @return     {string}  Internal font name
+ */
 function name2Font(font) {
 	switch (font) {
 		case "Blambot Casual":
@@ -131,6 +138,12 @@ function name2Font(font) {
 	}
 }
 
+/**
+ * Should we use base64?
+ *
+ * @param      {string}   aId     Asset identifier
+ * @return     {boolean}  Whether or not we should use base64
+ */
 function useBase64(aId) {
 	if (aId.endsWith("-starter.xml")) return true;
 	switch (aId.substr(aId.lastIndexOf(".") + 1)) {
@@ -143,10 +156,11 @@ function useBase64(aId) {
 
 module.exports = {
 	/**
-	 * @summary Reads an XML buffer, decodes the elements, and returns a PK stream the LVM can parse.
-	 * @param {Buffer} xmlBuffer
-	 * @param {string} mId
-	 * @returns {Promise<{zipBuf:Buffer,caché:{[aId:string]:Buffer}}>}
+	 * Reads an XML buffer, decodes the elements, and returns a PK stream the LVM can parse.
+	 *
+	 * @param      {Buffer}                                             xmlBuffer  The xml buffer
+	 * @param      {string}                                             mId        The m identifier
+	 * @return     {Promise<{zipBuf:Buffer,caché:{[aId:string]:Buffer}  }>}
 	 */
 	async packMovie(xmlBuffer, mId = null) {
 		if (xmlBuffer.length == 0) throw null;
@@ -452,11 +466,13 @@ module.exports = {
 		return { zipBuf: await zip.zip(), caché: assetBuffers };
 	},
 	/**
-	 * @summary Given a PK stream from the LVM, returns an XML buffer to save locally.
-	 * @param {nodezip.ZipFile} zipFile
-	 * @param {Buffer} thumb
-	 * @param {{[aId:string]:Buffer}} assetBuffers
-	 * @returns {Promise<Buffer>}
+	 * Given a PK stream from the LVM, returns an XML buffer to save locally.
+	 *
+	 * @param      {nodezip.ZipFile}  zipFile              The zip file
+	 * @param      {Buffer}           thumb                The thumb
+	 * @param      {<type>}           [assetBuffers=null]  The asset buffers
+	 * @param      {{[aId:string]:Buffer}  }       assetBuffers
+	 * @return     {Promise<Buffer>}  XML buffer
 	 */
 	async unpackMovie(zipFile, thumb = null, assetBuffers = null) {
 		return new Promise((res) => {
@@ -545,9 +561,11 @@ module.exports = {
 		});
 	},
 	/**
+	 * Unpack XML
 	 *
-	 * @param {Buffer} xml
-	 * @param {mId} mId
+	 * @param      {Buffer}   xml     The xml
+	 * @param      {mId}      mId     The movie identifier
+	 * @return     {Promise}  An empty Promise
 	 */
 	async unpackXml(xml, mId) {
 		var i = mId.indexOf("-");

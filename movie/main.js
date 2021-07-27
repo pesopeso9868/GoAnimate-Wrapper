@@ -7,12 +7,13 @@ const fs = require("fs");
 
 module.exports = {
 	/**
-	 * Save the movie.
-	 * @param  {string} movieZip Path to zip file.
-	 * @param  {Buffer} thumb    Image data for thumbnail.
-	 * @param  {string} oldId    Old movie ID.
-	 * @param  {string} nëwId=oldId    New movie ID.
-	 * @return {Promise<string>}          New movie ID.
+	 * Save movie
+	 *
+	 * @param      {string}           movieZip     Path to zip file
+	 * @param      {Buffer}           thumb        Image data for thumbnail
+	 * @param      {string}           oldId        Old movie ID
+	 * @param      {string}           nëwId=oldId  New movie ID
+	 * @return     {Promise<string>}  New movie ID
 	 */
 	save(movieZip, thumb, oldId, nëwId = oldId) {
 		// Saves the thumbnail of the respective video.
@@ -46,6 +47,12 @@ module.exports = {
 			}
 		});
 	},
+	/**
+	 * Load zip movie
+	 *
+	 * @param      {string}   mId     The movie id
+	 * @return     {Promise<Buffer>}  { description_of_the_return_value }
+	 */
 	loadZip(mId) {
 		return new Promise((res) => {
 			const i = mId.indexOf("-");
@@ -74,7 +81,7 @@ module.exports = {
 						});
 						break;
 					} catch (e) {
-						res();
+						res(); //Shouldn't you reject the promise here? whats going on
 					}
 				}
 				default:
@@ -82,6 +89,12 @@ module.exports = {
 			}
 		});
 	},
+	/**
+	 * Load movie xml
+	 *
+	 * @param      {string}   movieId  The movie identifier
+	 * @return     {Promise}  { description_of_the_return_value }
+	 */
 	loadXml(movieId) {
 		return new Promise(async (res, rej) => {
 			const i = movieId.indexOf("-");
@@ -108,6 +121,12 @@ module.exports = {
 			}
 		});
 	},
+	/**
+	 * Load movie thumbnail
+	 *
+	 * @param      {string}           movieId  The movie identifier
+	 * @return     {Promise<Buffer>}  Image data of the thumbnail
+	 */
 	loadThumb(movieId) {
 		return new Promise(async (res, rej) => {
 			if (!movieId.startsWith("m-")) return;
@@ -116,6 +135,11 @@ module.exports = {
 			isNaN(n) ? rej() : res(fs.readFileSync(fn));
 		});
 	},
+	/**
+	 * List movies
+	 *
+	 * @return     {Array}  List of movies
+	 */
 	list() {
 		const array = [];
 		const last = fUtil.getLastFileIndex("movie-", ".xml");
@@ -126,6 +150,12 @@ module.exports = {
 		}
 		return array;
 	},
+	/**
+	 * Get movie metadata
+	 *
+	 * @param      {string}           movieId  The movie identifier
+	 * @return     {Promise<Object>}  Object containing movie meta
+	 */
 	meta(movieId) {
 		return new Promise(async (res, rej) => {
 			if (!movieId.startsWith("m-")) return;

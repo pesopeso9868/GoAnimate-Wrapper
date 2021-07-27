@@ -52,10 +52,12 @@ for(i in info.languages){
 }
 xml.up()
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * TTS voice handler
+ *
+ * @param      {http.IncomingMessage}  req     The request
+ * @param      {http.ServerResponse}   res     The response
+ * @param      {<type>}                url     The url
+ * @return     {boolean}               Whether or not the function failed
  */
 module.exports = function (req, res, url) {
 	if (req.method != "POST" || url.path != "/goapi/getTextToSpeechVoices/") return;

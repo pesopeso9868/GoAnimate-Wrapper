@@ -1,4 +1,12 @@
 const meta = require("../movie/main")
+/**
+ * { function_description }
+ *
+ * @param      {<type>}   req     The request
+ * @param      {<type>}   res     The resource
+ * @param      {<type>}   url     The url
+ * @return     {boolean}  { description_of_the_return_value }
+ */
 module.exports = function(req, res, url){
 	if (req.method != 'GET') return;
 	const query = url.query;

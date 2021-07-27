@@ -5,9 +5,10 @@ const lame = require("node-lame");
 const duplex = require("stream").Duplex;
 
 /**
+ * Convert ogg to mp3 using LAME encoder
  *
- * @param {Buffer} inputBuffer
- * @returns {Buffer}
+ * @param      {Buffer}  inputBuffer  The input buffer
+ * @return     {Buffer}  Output buffer, in mp3
  */
 module.exports = (inputBuffer) => {
 	return new Promise(async (res, rej) => {

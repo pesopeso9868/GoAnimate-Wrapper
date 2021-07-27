@@ -7,6 +7,13 @@ const qs = require('querystring');
 const https = require('https');
 const http = require('http');
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}   voiceName  The voice name
+ * @param      {Array}    text       The text
+ * @return     {Promise}  { description_of_the_return_value }
+ */
 function processVoice(voiceName, text) {
 	return new Promise((res, rej) => {
 		const voice = voices[voiceName];
@@ -196,6 +203,14 @@ function processVoice(voiceName, text) {
 	});
 }
 
+/**
+ * { function_description }
+ *
+ * @param      {<type>}   req     The request
+ * @param      {<type>}   res     The resource
+ * @param      {<type>}   url     The url
+ * @return     {boolean}  { description_of_the_return_value }
+ */
 module.exports = function (req, res, url) {
 	if (req.method != 'POST' || url.path != '/goapi/convertTextToSoundAsset/') return;
 	loadPost(req, res).then(data => {

@@ -1,9 +1,11 @@
 const qs = require("querystring");
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {boolean} parse
+ * { function_description }
+ *
+ * @param      {http.IncomingMessage}  req     The request
+ * @param      {http.ServerResponse}   res     The resource
+ * @return     {Promise}               { description_of_the_return_value }
  */
 module.exports = function (req, res) {
 	return new Promise((resolve, rej) => {

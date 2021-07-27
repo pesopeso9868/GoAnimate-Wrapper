@@ -13,6 +13,12 @@ const xmldoc = require('xmldoc');
 const fs = require('fs');
 const builder = require("xmlbuilder2");
 
+/**
+ * Use a really long switch statement to convert font names
+ *
+ * @param      {string}  font    The font name
+ * @return     {string}  The internal font name
+ */
 function name2Font(font) {
 	switch (font) {
 		case "Blambot Casual":
@@ -133,6 +139,12 @@ function name2Font(font) {
 	}
 }
 
+/**
+ * { function_description }
+ *
+ * @param      {string}   aId     A identifier
+ * @return     {boolean}  { description_of_the_return_value }
+ */
 function useBase64(aId) {
 	switch (aId.substr(aId.lastIndexOf('.') + 1)) {
 		case 'xml':
@@ -159,6 +171,13 @@ module.exports = {
 	 * @param {Buffer} xmlBuffer 
 	 * @param {string} mId
 	 * @returns {Promise<Buffer>}
+	 */
+	/**
+	 * { function_description }
+	 *
+	 * @param      {string}   xmlBuffer   The XML buffer
+	 * @param      {string}   [mId=null]  The movie ID
+	 * @return     {Promise}  { description_of_the_return_value }
 	 */
 	async packXml(xmlBuffer, mId = null) {
 		if (xmlBuffer.length == 0) throw null;

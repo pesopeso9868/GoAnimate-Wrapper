@@ -9,9 +9,12 @@ const builder = require("xmlbuilder2");
 
 /**
  * List user assets.
- * @param  {Object} data    An Object containing type and themeId.
- * @param  {bool} makeZip Create a .zip file rather than an .xml file
- * @return {Promise<Buffer>}         The list stored in a Buffer.
+ *
+ * @param      {Object}           data     An Object containing type and
+ *                                         themeId.
+ * @param      {bool}             makeZip  Create a .zip file rather than an
+ *                                         .xml file
+ * @return     {Promise<Buffer>}  The list stored in a Buffer.
  */
 async function listAssets(data, makeZip) {
 	var xmlString;
@@ -151,10 +154,13 @@ async function listAssets(data, makeZip) {
 }
 
 /**
- * @param {http.IncomingMessage} req
- * @param {http.ServerResponse} res
- * @param {import("url").UrlWithParsedQuery} url
- * @returns {boolean}
+ * HTTP asset list handler
+ *
+ * @param      {http.IncomingMessage}              req     The request
+ * @param      {http.ServerResponse}               res     The response
+ * @param      {import("url").UrlWithParsedQuery}  url     The url
+ * @return     {boolean}                           Whether or not the function
+ *                                                 was successful
  */
 module.exports = function (req, res, url) {
 	var makeZip = false;

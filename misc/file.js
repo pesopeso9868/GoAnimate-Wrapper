@@ -4,18 +4,18 @@ const fs = require("fs");
 
 module.exports = {
 	/**
-	 *
-	 * @param {number} n
-	 * @param {number} l
-	 * @returns {string}
+	 * Pad zeros
+	 * @param {number} Number
+	 * @param {number} Target length
+	 * @returns {string} String with padded zeros
 	 */
 	padZero(n, l = process.env.FILE_NUM_WIDTH) {
 		return ("" + n).padStart(l, "0");
 	},
 	/**
-	 *
-	 * @param {string} temp
-	 * @param {string} info
+	 * printf-like replacement
+	 * @param {string} pattern
+	 * @param {string} replacement
 	 * @returns {string}
 	 */
 	fillTemplate(temp, info) {
@@ -112,7 +112,7 @@ module.exports = {
 		return list.length ? Number.parseInt(list.pop().substr(s.length, l)) : -1;
 	},
 	/**
-	 *
+	 * Create a zip file
 	 * @param {string} fileName
 	 * @param {string} zipName
 	 */

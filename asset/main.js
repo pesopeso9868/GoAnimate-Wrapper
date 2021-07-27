@@ -6,9 +6,10 @@ const caché = require("./caché");
 module.exports = {
 	/**
 	 * Call caché.load with provided arguments.
-	 * @param  {string} mId The movie ID.
-	 * @param  {string} aId The asset ID.
-	 * @return {Buffer}     The asset, stored in a Buffer.
+	 *
+	 * @param      {string}  mId     The movie ID.
+	 * @param      {string}  aId     The asset ID.
+	 * @return     {Buffer}  The asset, stored in a Buffer.
 	 */
 	load(mId, aId) {
 		return caché.load(mId, aId);
@@ -47,8 +48,9 @@ module.exports = {
 	},
 	/**
 	 * List characters for a theme.
-	 * @param  {str} theme The theme ID.
-	 * @return {Promise<Array>}       A Promise containing the theme list.
+	 *
+	 * @param      {str}             theme   The theme ID.
+	 * @return     {Promise<Array>}  A Promise containing the theme list.
 	 */
 	chars(theme) {
 		return new Promise(async (res, rej) => {
